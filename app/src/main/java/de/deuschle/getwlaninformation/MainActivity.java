@@ -7,36 +7,43 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.provider.Settings;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import de.deuschle.getwlaninformation.Settings.*;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Objects;
+
+import de.deuschle.getwlaninformation.Profiles.Profile;
+import de.deuschle.getwlaninformation.Settings.Bluetooth;
+import de.deuschle.getwlaninformation.Settings.RingtoneMode;
+import de.deuschle.getwlaninformation.Settings.Setting;
+import de.deuschle.getwlaninformation.Settings.Wlan;
 
 public class MainActivity extends AppCompatActivity {
 
-    public Wlan wlan;
-    public RingtoneMode ringtoneMode;
-    public Bluetooth bluetooth;
-    public NotificationManager notificationManager;
+    private final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+    private final AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+    private final BluetoothManager bluetoothManager = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
+    private final BluetoothAdapter bluetoothAdapter = Objects.requireNonNull(bluetoothManager).getAdapter();
 
     private String profileName;
     private Boolean profileActive;
+    private Wlan wlan;
+    private RingtoneMode ringtoneMode;
+    private Bluetooth bluetooth;
+    private NotificationManager notificationManager;
+    private Dictionary<String, Profile> profileDictionary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,60 +75,39 @@ public class MainActivity extends AppCompatActivity {
 
         statusView.setText(createStatusString());
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                statusView.setText(createStatusString());
-                Snackbar.make(view, "Hier könnte ihre Werbung stehen", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+        fab.setOnClickListener(view -> {
+            statusView.setText(createStatusString());
+            Snackbar.make(view, "Hier könnte ihre Werbung stehen", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         });
 
-        buttonOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                buttonOn.setEnabled(false);
-                buttonOff.setEnabled(true);
-                wlan.turnOn();
-                profileActive = false;
-            }
+        buttonOn.setOnClickListener(view -> {
+            buttonOn.setEnabled(false);
+            buttonOff.setEnabled(true);
+            wlan.turnOn();
+            profileActive = false;
         });
-        buttonOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                buttonOff.setEnabled(false);
-                buttonOn.setEnabled(true);
-                wlan.turnOff();
-                profileActive = false;
-            }
+        buttonOff.setOnClickListener(view -> {
+            buttonOff.setEnabled(false);
+            buttonOn.setEnabled(true);
+            wlan.turnOff();
+            profileActive = false;
         });
-        profile1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activateProfile1();
-                profileActive = true;
-            }
+        profile1.setOnClickListener(view -> {
+            activateProfile1();
+            profileActive = true;
         });
-        profile2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activateProfile2();
-                profileActive = true;
-            }
+        profile2.setOnClickListener(view -> {
+            activateProfile2();
+            profileActive = true;
         });
-        bluetoothButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bluetooth.next();
-                profileActive = false;
-            }
+        bluetoothButton.setOnClickListener(view -> {
+            bluetooth.next();
+            profileActive = false;
         });
-        ringtoneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ringtoneMode.next();
-                profileActive = false;
-            }
+        ringtoneButton.setOnClickListener(view -> {
+            ringtoneMode.next();
+            profileActive = false;
         });
     }
 
@@ -149,21 +135,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void initiateSettingVariables() {
         notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            assert notificationManager != null;
-            if (!notificationManager.isNotificationPolicyAccessGranted()) {
-                startActivity(new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
-            }
+        assert notificationManager != null;
+        if (!notificationManager.isNotificationPolicyAccessGranted()) {
+            startActivity(new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
         }
 
-        final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        wlan = Wlan.getInstance(wifiManager);
-        final AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-        ringtoneMode = RingtoneMode.getInstance(audioManager);
-        final BluetoothManager bluetoothManager = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
+        wlan = new Wlan(wifiManager);
+        ringtoneMode = new RingtoneMode(audioManager);
         assert bluetoothManager != null;
-        final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-        bluetooth = Bluetooth.getInstance(bluetoothAdapter);
+        bluetooth = new Bluetooth(bluetoothAdapter);
     }
 
     private String createStatusString() {
@@ -188,5 +168,38 @@ public class MainActivity extends AppCompatActivity {
         wlan.turnOn();
         bluetooth.turnOff();
         ringtoneMode.setTo0();
+    }
+
+    void createProfiles() {
+        Hashtable<String, Setting> homeDic = new Hashtable<>();
+        Hashtable<String, Setting> workDic = new Hashtable<>();
+
+        Wlan wlanHome = new Wlan(wifiManager);
+        wlanHome.setActiveState(WifiManager.WIFI_STATE_ENABLED);
+        RingtoneMode ringtoneHome = new RingtoneMode(audioManager);
+        ringtoneHome.setActiveState(AudioManager.RINGER_MODE_NORMAL);
+        Bluetooth bluetoothHome = new Bluetooth(bluetoothAdapter);
+        bluetoothHome.setActiveState(BluetoothAdapter.STATE_ON);
+
+        homeDic.put(wlanHome.getName(), wlanHome);
+        homeDic.put(ringtoneHome.getName(), ringtoneHome);
+        homeDic.put(bluetoothHome.getName(), bluetoothHome);
+
+        Wlan wlanWork = new Wlan(wifiManager);
+        wlanWork.setActiveState(WifiManager.WIFI_STATE_ENABLED);
+        RingtoneMode ringtoneWork = new RingtoneMode(audioManager);
+        ringtoneWork.setActiveState(AudioManager.RINGER_MODE_SILENT);
+        Bluetooth bluetoothWork = new Bluetooth(bluetoothAdapter);
+        bluetoothWork.setActiveState(BluetoothAdapter.STATE_OFF);
+
+        workDic.put(wlanWork.getName(), wlanWork);
+        workDic.put(ringtoneWork.getName(), ringtoneWork);
+        workDic.put(bluetoothWork.getName(), bluetoothWork);
+
+        Profile home = new Profile("home", homeDic);
+        Profile work = new Profile("work", workDic);
+
+        profileDictionary.put(home.getName(), home);
+        profileDictionary.put(work.getName(), work);
     }
 }

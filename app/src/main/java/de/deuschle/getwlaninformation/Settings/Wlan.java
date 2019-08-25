@@ -2,20 +2,15 @@ package de.deuschle.getwlaninformation.Settings;
 
 import android.net.wifi.WifiManager;
 
+// Additional Infos: https://developer.android.com/reference/android/net/wifi/WifiManager?hl=en
+
 public class Wlan extends TwoStyleSetting {
 
-    private static Wlan instance;
-    private WifiManager wifiManager;
+    private final WifiManager wifiManager;
 
-    private Wlan(WifiManager wifiManager) {
+    public Wlan(WifiManager wifiManager) {
         this.wifiManager = wifiManager;
-    }
-
-    public static Wlan getInstance(WifiManager wifiManager) {
-        if (instance == null) {
-            instance = new Wlan(wifiManager);
-        }
-        return instance;
+        this.setName("wlan");
     }
 
     @Override
@@ -34,8 +29,21 @@ public class Wlan extends TwoStyleSetting {
     }
 
     @Override
-    public void setState(boolean state) {
-        wifiManager.setWifiEnabled(state);
+    boolean setState(int state) {
+        if (state == WifiManager.WIFI_STATE_DISABLED) {
+            this.setState(false);
+            return true;
+        } else if (state == WifiManager.WIFI_STATE_ENABLED) {
+            this.setState(true);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void activateActiveState() {
+        this.setState(activeState);
     }
 
     @Override
@@ -44,8 +52,13 @@ public class Wlan extends TwoStyleSetting {
     }
 
     @Override
+    void setState(boolean state) {
+        wifiManager.setWifiEnabled(state);
+    }
+
+    @Override
     public void next() {
-        if(isEnabled()){
+        if (isEnabled()) {
             setState(false);
         } else {
             setState(true);

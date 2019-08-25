@@ -1,10 +1,10 @@
 package de.deuschle.getwlaninformation.Settings;
 
-public interface ThreeTypeSetting extends Setting {
-    void setTo0();
+public abstract class ThreeTypeSetting extends Setting {
+    public abstract void setTo0();
 
-    void setTo1();
+    public abstract void setTo1();
 
-    void setTO2();
+    public abstract void setTO2();
 
 }

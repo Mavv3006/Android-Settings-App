@@ -1,6 +1,6 @@
 package de.deuschle.getwlaninformation.Settings;
 
-abstract class TwoStyleSetting implements Setting {
+abstract class TwoStyleSetting extends Setting {
     abstract void turnOn();
 
     abstract void turnOff();

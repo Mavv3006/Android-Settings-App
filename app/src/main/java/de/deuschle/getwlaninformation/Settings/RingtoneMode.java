@@ -5,22 +5,22 @@ import android.media.AudioManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RingtoneMode implements ThreeTypeSetting {
+// Additional Infos: https://developer.android.com/reference/android/media/AudioManager
 
-    private static RingtoneMode instance;
+public class RingtoneMode extends ThreeTypeSetting {
+
     private static ArrayList<String> audioStyle;
-    private AudioManager audioManager;
+    private final AudioManager audioManager;
 
-    private RingtoneMode(AudioManager audiomanager) {
+    public RingtoneMode(AudioManager audiomanager) {
         this.audioManager = audiomanager;
         audioStyle = new ArrayList<>(Arrays.asList("Silent", "Vibrate", "Normal"));
+        this.setName("rintone");
     }
 
-    public static RingtoneMode getInstance(AudioManager audioManager) {
-        if (instance == null) {
-            instance = new RingtoneMode(audioManager);
-        }
-        return instance;
+    @Override
+    public void activateActiveState() {
+        this.setRinger(activeState);
     }
 
     public int getState() {
@@ -31,6 +31,16 @@ public class RingtoneMode implements ThreeTypeSetting {
     public void next() {
         int newMode = getState() - 1 < 0 ? 2 : getState() - 1;
         setRinger(newMode);
+    }
+
+    @Override
+    boolean setState(int state) {
+        if (state >= 0 && state <= 3) {
+            this.setRinger(state);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

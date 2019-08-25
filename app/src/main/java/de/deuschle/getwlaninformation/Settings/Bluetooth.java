@@ -2,20 +2,15 @@ package de.deuschle.getwlaninformation.Settings;
 
 import android.bluetooth.BluetoothAdapter;
 
+// Additional Infos: https://developer.android.com/reference/android/bluetooth/BluetoothAdapter?hl=en
+
 public class Bluetooth extends TwoStyleSetting {
 
-    private static Bluetooth instance;
-    private BluetoothAdapter bluetoothAdapter;
+    private final BluetoothAdapter bluetoothAdapter;
 
-    private Bluetooth(BluetoothAdapter bluetoothAdapter) {
+    public Bluetooth(BluetoothAdapter bluetoothAdapter) {
         this.bluetoothAdapter = bluetoothAdapter;
-    }
-
-    public static Bluetooth getInstance(BluetoothAdapter bluetoothAdapter) {
-        if (instance == null) {
-            instance = new Bluetooth(bluetoothAdapter);
-        }
-        return instance;
+        this.setName("bluetooth");
     }
 
     @Override
@@ -48,6 +43,11 @@ public class Bluetooth extends TwoStyleSetting {
     }
 
     @Override
+    public void activateActiveState() {
+        this.setState(activeState);
+    }
+
+    @Override
     public int getState() {
         return bluetoothAdapter.getState();
     }
@@ -58,6 +58,19 @@ public class Bluetooth extends TwoStyleSetting {
             setState(false);
         } else {
             setState(true);
+        }
+    }
+
+    @Override
+    boolean setState(int state) {
+        if (state == 10) {
+            this.turnOff();
+            return true;
+        } else if (state == 12) {
+            this.turnOn();
+            return true;
+        } else {
+            return false;
         }
     }
 }

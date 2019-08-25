@@ -1,4 +1,11 @@
 <resources>
-<string name="app_name">Setting Profiles</string>
-<string name="action_settings">Settings</string>
+    <string name="app_name">Setting Profiles</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+
+    <!-- Messages Preferences -->
+
+    <!-- Sync Preferences -->
 </resources>
