@@ -52,15 +52,6 @@ public class Wlan extends TwoStyleSetting {
     }
 
     @Override
-    public void next() {
-        if (isEnabled()) {
-            setState(false);
-        } else {
-            setState(true);
-        }
-    }
-
-    @Override
     public String toString() {
         return Boolean.toString(isEnabled());
     }

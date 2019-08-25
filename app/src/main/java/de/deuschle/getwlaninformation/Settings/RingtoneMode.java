@@ -7,14 +7,14 @@ import java.util.Arrays;
 
 // Additional Infos: https://developer.android.com/reference/android/media/AudioManager
 
-public class RingtoneMode extends ThreeTypeSetting {
+public class RingtoneMode extends Setting {
 
     private static final ArrayList<String> audioStyle = new ArrayList<>(Arrays.asList("Silent", "Vibrate", "Normal"));
     private final AudioManager audioManager;
 
     public RingtoneMode(AudioManager audiomanager) {
         this.audioManager = audiomanager;
-        this.setName("rintone");
+        this.setName("ringtone");
     }
 
     public int getState() {
@@ -24,13 +24,13 @@ public class RingtoneMode extends ThreeTypeSetting {
     @Override
     public void next() {
         int newMode = getState() - 1 < 0 ? 2 : getState() - 1;
-        setRinger(newMode);
+        setState(newMode);
     }
 
     @Override
     boolean setState(int state) {
         if (state >= 0 && state <= 3) {
-            this.setRinger(state);
+            audioManager.setRingerMode(state);
             return true;
         } else {
             return false;
@@ -38,26 +38,8 @@ public class RingtoneMode extends ThreeTypeSetting {
     }
 
     @Override
-    public void setTo0() { // silent
-        setRinger(0);
-    }
-
-    @Override
-    public void setTo1() { // vibrate
-        setRinger(1);
-    }
-
-    @Override
-    public void setTO2() { // normal
-        setRinger(2);
-    }
-
-    @Override
     public String toString() {
         return audioStyle.get(getState());
     }
-
-    private void setRinger(int mode) {
-        audioManager.setRingerMode(mode);
-    }
 }
+

@@ -48,15 +48,6 @@ public class Bluetooth extends TwoStyleSetting {
     }
 
     @Override
-    public void next() {
-        if (isEnabled()) {
-            setState(false);
-        } else {
-            setState(true);
-        }
-    }
-
-    @Override
     boolean setState(int state) {
         if (state == 10) {
             this.turnOff();

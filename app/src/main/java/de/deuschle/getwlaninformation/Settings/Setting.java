@@ -2,7 +2,7 @@ package de.deuschle.getwlaninformation.Settings;
 
 public abstract class Setting {
 
-    int activeState;
+    private int activeState;
     private String name;
 
     public int getActiveState() {
@@ -27,7 +27,7 @@ public abstract class Setting {
 
     abstract int getState();
 
-    abstract void next();
+    public abstract void next();
 
     abstract boolean setState(int state);
 }

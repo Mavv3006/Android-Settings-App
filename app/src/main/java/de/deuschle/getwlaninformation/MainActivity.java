@@ -25,6 +25,7 @@ import java.util.Objects;
 
 import de.deuschle.getwlaninformation.Profiles.Profile;
 import de.deuschle.getwlaninformation.Settings.Bluetooth;
+import de.deuschle.getwlaninformation.Settings.InterruptionFilter;
 import de.deuschle.getwlaninformation.Settings.RingtoneMode;
 import de.deuschle.getwlaninformation.Settings.Setting;
 import de.deuschle.getwlaninformation.Settings.Wlan;
@@ -33,14 +34,16 @@ public class MainActivity extends AppCompatActivity {
 
     private WifiManager wifiManager;
     private AudioManager audioManager;
-    private BluetoothManager bluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
+    private NotificationManager notificationManager;
 
     private String profileName;
     private Boolean profileActive;
     private Wlan wlan;
     private RingtoneMode ringtoneMode;
     private Bluetooth bluetooth;
+    private InterruptionFilter doNotDisturb;
+
     private Hashtable<String, Profile> profileDictionary = new Hashtable<>();
 
     @Override
@@ -52,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-        bluetoothManager = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothManager bluetoothManager = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = Objects.requireNonNull(bluetoothManager).getAdapter();
+        notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         initiateSettingVariables();
         createProfiles();
@@ -138,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initiateSettingVariables() {
-        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         assert notificationManager != null;
         if (!notificationManager.isNotificationPolicyAccessGranted()) {
             startActivity(new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
@@ -146,14 +149,15 @@ public class MainActivity extends AppCompatActivity {
 
         wlan = new Wlan(wifiManager);
         ringtoneMode = new RingtoneMode(audioManager);
-        assert bluetoothManager != null;
         bluetooth = new Bluetooth(bluetoothAdapter);
+        doNotDisturb = new InterruptionFilter(notificationManager);
     }
 
     private String createStatusString() {
         String result = "Wlan: " + wlan.toString();
         result += "\nRingtone: " + ringtoneMode.toString();
         result += "\nBluetooth: " + bluetooth.toString();
+        result += "\nInterruptionFilter: " + doNotDisturb.toString();
         if (profileActive) {
             result += "\nProfile: " + profileName;
         }
@@ -169,35 +173,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void createProfiles() {
-        Hashtable<String, Setting> homeDic = new Hashtable<>();
-        Hashtable<String, Setting> workDic = new Hashtable<>();
-
-        Wlan wlanHome = new Wlan(wifiManager);
-        wlanHome.setActiveState(WifiManager.WIFI_STATE_ENABLED);
-        RingtoneMode ringtoneHome = new RingtoneMode(audioManager);
-        ringtoneHome.setActiveState(AudioManager.RINGER_MODE_NORMAL);
-        Bluetooth bluetoothHome = new Bluetooth(bluetoothAdapter);
-        bluetoothHome.setActiveState(BluetoothAdapter.STATE_ON);
-
-        homeDic.put(wlanHome.getName(), wlanHome);
-        homeDic.put(ringtoneHome.getName(), ringtoneHome);
-        homeDic.put(bluetoothHome.getName(), bluetoothHome);
-
-        Wlan wlanWork = new Wlan(wifiManager);
-        wlanWork.setActiveState(WifiManager.WIFI_STATE_ENABLED);
-        RingtoneMode ringtoneWork = new RingtoneMode(audioManager);
-        ringtoneWork.setActiveState(AudioManager.RINGER_MODE_SILENT);
-        Bluetooth bluetoothWork = new Bluetooth(bluetoothAdapter);
-        bluetoothWork.setActiveState(BluetoothAdapter.STATE_OFF);
-
-        workDic.put(wlanWork.getName(), wlanWork);
-        workDic.put(ringtoneWork.getName(), ringtoneWork);
-        workDic.put(bluetoothWork.getName(), bluetoothWork);
+        Hashtable<String, Setting> homeDic = createProfile(WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
+        Hashtable<String, Setting> workDic = createProfile(WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_SILENT, BluetoothAdapter.STATE_OFF, NotificationManager.INTERRUPTION_FILTER_PRIORITY);
 
         Profile home = new Profile("home", homeDic);
         Profile work = new Profile("work", workDic);
 
         profileDictionary.put(home.getName(), home);
         profileDictionary.put(work.getName(), work);
+    }
+
+    Hashtable<String, Setting> createProfile(int wifiState, int ringerState, int bluetoothState, int interruptionState) {
+        Hashtable<String, Setting> settingHashtable = new Hashtable<>();
+
+        Wlan wlan = new Wlan(wifiManager);
+        wlan.setActiveState(wifiState);
+        RingtoneMode ringtoneMode = new RingtoneMode(audioManager);
+        ringtoneMode.setActiveState(ringerState);
+        Bluetooth bluetooth = new Bluetooth(bluetoothAdapter);
+        bluetooth.setActiveState(bluetoothState);
+        InterruptionFilter interruptionFilter = new InterruptionFilter(notificationManager);
+        interruptionFilter.setActiveState(interruptionState);
+
+        settingHashtable.put(wlan.getName(), wlan);
+        settingHashtable.put(ringtoneMode.getName(), ringtoneMode);
+        settingHashtable.put(bluetooth.getName(), bluetooth);
+        settingHashtable.put(interruptionFilter.getName(), interruptionFilter);
+
+        return settingHashtable;
     }
 }

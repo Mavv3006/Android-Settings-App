@@ -9,5 +9,12 @@ abstract class TwoStyleSetting extends Setting {
 
     abstract void setState(boolean state);
 
-
+    @Override
+    public void next() {
+        if (isEnabled()) {
+            setState(false);
+        } else {
+            setState(true);
+        }
+    }
 }
