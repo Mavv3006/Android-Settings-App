@@ -42,11 +42,6 @@ public class Wlan extends TwoStyleSetting {
     }
 
     @Override
-    public void activateActiveState() {
-        this.setState(activeState);
-    }
-
-    @Override
     public int getState() {
         return wifiManager.getWifiState();
     }

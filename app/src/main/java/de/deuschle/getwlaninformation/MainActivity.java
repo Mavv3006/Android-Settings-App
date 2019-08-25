@@ -20,7 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Objects;
 
@@ -32,18 +31,17 @@ import de.deuschle.getwlaninformation.Settings.Wlan;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-    private final AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-    private final BluetoothManager bluetoothManager = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
-    private final BluetoothAdapter bluetoothAdapter = Objects.requireNonNull(bluetoothManager).getAdapter();
+    private WifiManager wifiManager;
+    private AudioManager audioManager;
+    private BluetoothManager bluetoothManager;
+    private BluetoothAdapter bluetoothAdapter;
 
     private String profileName;
     private Boolean profileActive;
     private Wlan wlan;
     private RingtoneMode ringtoneMode;
     private Bluetooth bluetooth;
-    private NotificationManager notificationManager;
-    private Dictionary<String, Profile> profileDictionary;
+    private Hashtable<String, Profile> profileDictionary = new Hashtable<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        bluetoothManager = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
+        bluetoothAdapter = Objects.requireNonNull(bluetoothManager).getAdapter();
+
         initiateSettingVariables();
+        createProfiles();
 
         final Button buttonOn = findViewById(R.id.button2);
         final Button buttonOff = findViewById(R.id.button);
@@ -94,11 +98,11 @@ public class MainActivity extends AppCompatActivity {
             profileActive = false;
         });
         profile1.setOnClickListener(view -> {
-            activateProfile1();
+            activateProfile("home");
             profileActive = true;
         });
         profile2.setOnClickListener(view -> {
-            activateProfile2();
+            activateProfile("work");
             profileActive = true;
         });
         bluetoothButton.setOnClickListener(view -> {
@@ -134,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initiateSettingVariables() {
-        notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         assert notificationManager != null;
         if (!notificationManager.isNotificationPolicyAccessGranted()) {
             startActivity(new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
@@ -156,18 +160,12 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    private void activateProfile1() {
-        profileName = "Home";
-        wlan.turnOn();
-        bluetooth.turnOn();
-        ringtoneMode.setTO2();
-    }
-
-    private void activateProfile2() {
-        profileName = "Work";
-        wlan.turnOn();
-        bluetooth.turnOff();
-        ringtoneMode.setTo0();
+    private void activateProfile(String name) {
+        Profile profile = profileDictionary.get(name);
+        if (profile != null) {
+            profileName = profile.getName();
+            profile.activate();
+        }
     }
 
     void createProfiles() {

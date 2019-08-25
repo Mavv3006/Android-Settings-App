@@ -43,11 +43,6 @@ public class Bluetooth extends TwoStyleSetting {
     }
 
     @Override
-    public void activateActiveState() {
-        this.setState(activeState);
-    }
-
-    @Override
     public int getState() {
         return bluetoothAdapter.getState();
     }

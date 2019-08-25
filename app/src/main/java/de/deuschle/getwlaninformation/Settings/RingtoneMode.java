@@ -9,18 +9,12 @@ import java.util.Arrays;
 
 public class RingtoneMode extends ThreeTypeSetting {
 
-    private static ArrayList<String> audioStyle;
+    private static final ArrayList<String> audioStyle = new ArrayList<>(Arrays.asList("Silent", "Vibrate", "Normal"));
     private final AudioManager audioManager;
 
     public RingtoneMode(AudioManager audiomanager) {
         this.audioManager = audiomanager;
-        audioStyle = new ArrayList<>(Arrays.asList("Silent", "Vibrate", "Normal"));
         this.setName("rintone");
-    }
-
-    @Override
-    public void activateActiveState() {
-        this.setRinger(activeState);
     }
 
     public int getState() {

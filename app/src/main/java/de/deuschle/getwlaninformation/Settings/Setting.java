@@ -21,7 +21,9 @@ public abstract class Setting {
         this.name = name;
     }
 
-    public abstract void activateActiveState();
+    public void activateActiveState() {
+        this.setState(activeState);
+    }
 
     abstract int getState();
 
