@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -62,61 +60,61 @@ public class MainActivity extends AppCompatActivity {
         initiateSettingVariables();
         createProfiles();
 
-        final Button buttonOn = findViewById(R.id.button2);
-        final Button buttonOff = findViewById(R.id.button);
-        final TextView statusView = findViewById(R.id.statusView);
-        Button bluetoothButton = findViewById(R.id.bluetooth);
-        Button ringtoneButton = findViewById(R.id.ringtoneMode);
-        Button profile1 = findViewById(R.id.profile1);
-        Button profile2 = findViewById(R.id.profile2);
+//        final Button buttonOn = findViewById(R.id.button2);
+//        final Button buttonOff = findViewById(R.id.button);
+//        final TextView statusView = findViewById(R.id.statusView);
+//        Button bluetoothButton = findViewById(R.id.bluetooth);
+//        Button ringtoneButton = findViewById(R.id.ringtoneMode);
+//        Button profile1 = findViewById(R.id.profile1);
+//        Button profile2 = findViewById(R.id.profile2);
         FloatingActionButton fab = findViewById(R.id.fab);
 
-        if (wlan.isEnabled()) {
-            buttonOn.setEnabled(false);
-            buttonOff.setEnabled(true);
-        } else {
-            buttonOn.setEnabled(true);
-            buttonOff.setEnabled(false);
-        }
+//        if (wlan.isEnabled()) {
+//            buttonOn.setEnabled(false);
+//            buttonOff.setEnabled(true);
+//        } else {
+//            buttonOn.setEnabled(true);
+//            buttonOff.setEnabled(false);
+//        }
 
         profileActive = false;
 
-        statusView.setText(createStatusString());
+//        statusView.setText(createStatusString());
 
         fab.setOnClickListener(view -> {
-            statusView.setText(createStatusString());
+//            statusView.setText(createStatusString());
             Snackbar.make(view, "Hier könnte ihre Werbung stehen", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         });
 
-        buttonOn.setOnClickListener(view -> {
-            buttonOn.setEnabled(false);
-            buttonOff.setEnabled(true);
-            wlan.turnOn();
-            profileActive = false;
-        });
-        buttonOff.setOnClickListener(view -> {
-            buttonOff.setEnabled(false);
-            buttonOn.setEnabled(true);
-            wlan.turnOff();
-            profileActive = false;
-        });
-        profile1.setOnClickListener(view -> {
-            activateProfile("home");
-            profileActive = true;
-        });
-        profile2.setOnClickListener(view -> {
-            activateProfile("work");
-            profileActive = true;
-        });
-        bluetoothButton.setOnClickListener(view -> {
-            bluetooth.next();
-            profileActive = false;
-        });
-        ringtoneButton.setOnClickListener(view -> {
-            ringtoneMode.next();
-            profileActive = false;
-        });
+//        buttonOn.setOnClickListener(view -> {
+//            buttonOn.setEnabled(false);
+//            buttonOff.setEnabled(true);
+//            wlan.turnOn();
+//            profileActive = false;
+//        });
+//        buttonOff.setOnClickListener(view -> {
+//            buttonOff.setEnabled(false);
+//            buttonOn.setEnabled(true);
+//            wlan.turnOff();
+//            profileActive = false;
+//        });
+//        profile1.setOnClickListener(view -> {
+//            activateProfile("home");
+//            profileActive = true;
+//        });
+//        profile2.setOnClickListener(view -> {
+//            activateProfile("work");
+//            profileActive = true;
+//        });
+//        bluetoothButton.setOnClickListener(view -> {
+//            bluetooth.next();
+//            profileActive = false;
+//        });
+//        ringtoneButton.setOnClickListener(view -> {
+//            ringtoneMode.next();
+//            profileActive = false;
+//        });
     }
 
     @Override
@@ -175,24 +173,28 @@ public class MainActivity extends AppCompatActivity {
     void createProfiles() {
         Hashtable<String, Setting> homeDic = createProfile(WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
         Hashtable<String, Setting> workDic = createProfile(WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_SILENT, BluetoothAdapter.STATE_OFF, NotificationManager.INTERRUPTION_FILTER_PRIORITY);
+        Hashtable<String, Setting> travelDic = createProfile(WifiManager.WIFI_STATE_DISABLED, AudioManager.RINGER_MODE_VIBRATE, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
 
         Profile home = new Profile("home", homeDic);
         Profile work = new Profile("work", workDic);
+        Profile travel = new Profile("travel", travelDic);
 
         profileDictionary.put(home.getName(), home);
         profileDictionary.put(work.getName(), work);
+        profileDictionary.put(travel.getName(), travel);
     }
 
     Hashtable<String, Setting> createProfile(int wifiState, int ringerState, int bluetoothState, int interruptionState) {
         Hashtable<String, Setting> settingHashtable = new Hashtable<>();
 
         Wlan wlan = new Wlan(wifiManager);
-        wlan.setActiveState(wifiState);
         RingtoneMode ringtoneMode = new RingtoneMode(audioManager);
-        ringtoneMode.setActiveState(ringerState);
         Bluetooth bluetooth = new Bluetooth(bluetoothAdapter);
-        bluetooth.setActiveState(bluetoothState);
         InterruptionFilter interruptionFilter = new InterruptionFilter(notificationManager);
+
+        wlan.setActiveState(wifiState);
+        ringtoneMode.setActiveState(ringerState);
+        bluetooth.setActiveState(bluetoothState);
         interruptionFilter.setActiveState(interruptionState);
 
         settingHashtable.put(wlan.getName(), wlan);
