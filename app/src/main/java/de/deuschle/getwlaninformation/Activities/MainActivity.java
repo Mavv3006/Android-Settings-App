@@ -1,4 +1,4 @@
-package de.deuschle.getwlaninformation;
+package de.deuschle.getwlaninformation.Activities;
 
 import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
@@ -22,6 +22,7 @@ import java.util.Hashtable;
 import java.util.Objects;
 
 import de.deuschle.getwlaninformation.Profiles.Profile;
+import de.deuschle.getwlaninformation.R;
 import de.deuschle.getwlaninformation.Settings.Bluetooth;
 import de.deuschle.getwlaninformation.Settings.InterruptionFilter;
 import de.deuschle.getwlaninformation.Settings.RingtoneMode;
