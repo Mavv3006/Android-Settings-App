@@ -8,78 +8,27 @@
     tools:context=".Activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="150dp"
+    <RadioGroup
+        android:layout_width="354dp"
+        android:layout_height="83dp"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:orientation="vertical"
-        android:weightSum="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <RadioButton
+            android:id="@+id/radioButton"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_height="wrap_content"
+            android:text="@string/radiobutton" />
 
-            <Switch
-                android:id="@+id/switch2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/switch_text" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/bluetooth" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <RadioButton
+            android:id="@+id/radioButton2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <Switch
-                android:id="@+id/switch3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/switch_text" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/wlan" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/tonProfil" />
-
-        </LinearLayout>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="@string/radiobutton" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

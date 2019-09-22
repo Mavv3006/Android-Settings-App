@@ -2,7 +2,6 @@
     <string name="app_name">Setting Profiles</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="switch_text"></string>
     <string name="bluetooth">Bluetooth</string>
     <string name="wlan">Wlan</string>
     <string name="tonProfil">Tonprofil</string>
@@ -10,6 +9,7 @@
     <string name="tonProfile_Vibrieren">Nur Vibrieren</string>
     <string name="tonProfile_Lautlos">Lautlos</string>
     <string name="title_activity_ringtone_profile_picker">Ton Profil</string>
+    <string name="radiobutton">RadioButton</string>
 
     <!-- Preference Titles -->
 
