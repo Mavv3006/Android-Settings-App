@@ -9,7 +9,12 @@
     <string name="tonProfile_Vibrieren">Nur Vibrieren</string>
     <string name="tonProfile_Lautlos">Lautlos</string>
     <string name="title_activity_ringtone_profile_picker">Ton Profil</string>
-    <string name="radiobutton">RadioButton</string>
+    <string name="radiobuttonProfileHome">Profile Home</string>
+    <string name="radiobuttonProfileTravel">Profile Travel</string>
+    <string name="radiobuttonProfileWork">Profile Work</string>
+
+    <string name="textViewString">Hallo ich bin ein String</string>
+    <string name="test">HO</string>
 
     <!-- Preference Titles -->
 

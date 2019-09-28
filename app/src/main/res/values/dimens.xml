@@ -3,4 +3,8 @@
     <dimen name="button_width">110dp</dimen>
     <dimen name="button_height">48dp</dimen>
     <dimen name="button_width_on_off">70dp</dimen>
+    <dimen name="radioGroupHeight">120dp</dimen>
+    <dimen name="radioGroupButtonHeight">40dp</dimen>
+    <dimen name="textViewHeight">100dp</dimen>
+    <dimen name="textViewWidth">200dp</dimen>
 </resources>

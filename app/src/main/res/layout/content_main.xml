@@ -9,26 +9,45 @@
     tools:showIn="@layout/activity_main">
 
     <RadioGroup
-        android:layout_width="354dp"
-        android:layout_height="83dp"
-        android:layout_marginTop="32dp"
+        android:id="@+id/radioGroup"
+        android:layout_width="200dp"
+        android:layout_height="@dimen/radioGroupHeight"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/profileHome"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/radiobutton" />
+            android:layout_height="@dimen/radioGroupButtonHeight"
+            android:text="@string/radiobuttonProfileHome" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/profileWork"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/radiobutton" />
+            android:layout_height="@dimen/radioGroupButtonHeight"
+            android:text="@string/radiobuttonProfileWork" />
+
+        <RadioButton
+            android:id="@+id/profileTravel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/radioGroupButtonHeight"
+            android:text="@string/radiobuttonProfileTravel" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="@dimen/textViewWidth"
+        android:layout_height="@dimen/textViewHeight"
+        android:layout_marginTop="80dp"
+        android:text="@string/textViewString"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

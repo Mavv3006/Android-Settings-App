@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -36,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private NotificationManager notificationManager;
 
-    private String profileName;
-    private Boolean profileActive;
     private Wlan wlan;
     private RingtoneMode ringtoneMode;
     private Bluetooth bluetooth;
@@ -61,61 +61,21 @@ public class MainActivity extends AppCompatActivity {
         initiateSettingVariables();
         createProfiles();
 
-//        final Button buttonOn = findViewById(R.id.button2);
-//        final Button buttonOff = findViewById(R.id.button);
-//        final TextView statusView = findViewById(R.id.statusView);
-//        Button bluetoothButton = findViewById(R.id.bluetooth);
-//        Button ringtoneButton = findViewById(R.id.ringtoneMode);
-//        Button profile1 = findViewById(R.id.profile1);
-//        Button profile2 = findViewById(R.id.profile2);
         FloatingActionButton fab = findViewById(R.id.fab);
-
-//        if (wlan.isEnabled()) {
-//            buttonOn.setEnabled(false);
-//            buttonOff.setEnabled(true);
-//        } else {
-//            buttonOn.setEnabled(true);
-//            buttonOff.setEnabled(false);
-//        }
-
-        profileActive = false;
-
-//        statusView.setText(createStatusString());
+        TextView textView = findViewById(R.id.statusTextView);
+        RadioButton profieWork = findViewById(R.id.profileWork);
+        RadioButton profileHome = findViewById(R.id.profileHome);
+        RadioButton profileTravel = findViewById(R.id.profileTravel);
 
         fab.setOnClickListener(view -> {
-//            statusView.setText(createStatusString());
+            textView.setText(createStatusString());
             Snackbar.make(view, "Hier könnte ihre Werbung stehen", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         });
 
-//        buttonOn.setOnClickListener(view -> {
-//            buttonOn.setEnabled(false);
-//            buttonOff.setEnabled(true);
-//            wlan.turnOn();
-//            profileActive = false;
-//        });
-//        buttonOff.setOnClickListener(view -> {
-//            buttonOff.setEnabled(false);
-//            buttonOn.setEnabled(true);
-//            wlan.turnOff();
-//            profileActive = false;
-//        });
-//        profile1.setOnClickListener(view -> {
-//            activateProfile("home");
-//            profileActive = true;
-//        });
-//        profile2.setOnClickListener(view -> {
-//            activateProfile("work");
-//            profileActive = true;
-//        });
-//        bluetoothButton.setOnClickListener(view -> {
-//            bluetooth.next();
-//            profileActive = false;
-//        });
-//        ringtoneButton.setOnClickListener(view -> {
-//            ringtoneMode.next();
-//            profileActive = false;
-//        });
+        profieWork.setOnClickListener(view -> activateProfile("work"));
+        profileHome.setOnClickListener(view -> activateProfile("home"));
+        profileTravel.setOnClickListener(view -> activateProfile("travel"));
     }
 
     @Override
@@ -157,16 +117,13 @@ public class MainActivity extends AppCompatActivity {
         result += "\nRingtone: " + ringtoneMode.toString();
         result += "\nBluetooth: " + bluetooth.toString();
         result += "\nInterruptionFilter: " + doNotDisturb.toString();
-        if (profileActive) {
-            result += "\nProfile: " + profileName;
-        }
         return result;
     }
 
     private void activateProfile(String name) {
         Profile profile = profileDictionary.get(name);
         if (profile != null) {
-            profileName = profile.getName();
+            String profileName = profile.getName();
             profile.activate();
         }
     }

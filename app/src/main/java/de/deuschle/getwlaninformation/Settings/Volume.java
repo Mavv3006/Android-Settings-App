@@ -28,7 +28,7 @@ public class Volume extends Setting {
 
     @Override
     boolean setState(int state) {
-        audioManager.setStreamVolume(streamType,state,AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+        audioManager.setStreamVolume(streamType, state, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
         return true;
     }
 }
