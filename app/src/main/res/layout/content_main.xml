@@ -36,12 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/radioGroupButtonHeight"
             android:text="@string/radiobuttonProfileTravel" />
-
-        <RadioButton
-            android:id="@+id/profileTest"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/radioGroupButtonHeight"
-            android:text="@string/profile_test" />
     </RadioGroup>
 
     <TextView

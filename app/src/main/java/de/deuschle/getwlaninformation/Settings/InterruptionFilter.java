@@ -7,6 +7,9 @@ import java.util.Arrays;
 
 public class InterruptionFilter extends Setting {
 
+    // None: Gar nicht stören
+    // Priority: Nur mit Priorität
+    // All: Ausgeschaltet
     private static final ArrayList<String> interruptionFilter = new ArrayList<>(Arrays.asList("Unknown", "All", "Priority", "None", "Alarms"));
     private final NotificationManager notificationManager;
 
@@ -28,7 +31,7 @@ public class InterruptionFilter extends Setting {
 
     @Override
     public String toString() {
-        return interruptionFilter.get(getState());
+        return getState() + " - " + interruptionFilter.get(getState());
     }
 
     @Override

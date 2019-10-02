@@ -21,25 +21,30 @@ public class RingtoneMode extends Setting {
         return audioManager.getRingerMode();
     }
 
+    // State 0 not reachable without INTERRUPTION_FILTER_NONE !
     @Override
     public void next() {
-        int newMode = getState() - 1 < 0 ? 2 : getState() - 1;
-        setState(newMode);
+        if (getState() == 0) {
+            return;
+        }
+        setState(getState() == 1 ? 2 : 1);
     }
 
     @Override
     boolean setState(int state) {
-        if (state >= 0 && state <= 3) {
-            audioManager.setRingerMode(state);
-            return true;
-        } else {
-            return false;
+        switch (state) {
+            case 1:
+            case 2:
+                audioManager.setRingerMode(state);
+                return true;
+            default:
+                return false;
         }
     }
 
     @Override
     public String toString() {
-        return audioStyle.get(getState());
+        return getState() + " - " + audioStyle.get(getState());
     }
 }
 

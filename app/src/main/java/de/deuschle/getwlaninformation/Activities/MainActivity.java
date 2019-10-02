@@ -9,6 +9,7 @@ import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioButton;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         initiateSettingVariables();
         createProfiles();
+        Log.d("OnCreate", "onCreate: Profiles created");
 
         FloatingActionButton fab = findViewById(R.id.fab);
         TextView textView = findViewById(R.id.statusTextView);
@@ -130,9 +132,8 @@ public class MainActivity extends AppCompatActivity {
 
     void createProfiles() {
         insertNewProfile("home", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
-        insertNewProfile("work", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_SILENT, BluetoothAdapter.STATE_OFF, NotificationManager.INTERRUPTION_FILTER_PRIORITY);
+        insertNewProfile("work", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_OFF, NotificationManager.INTERRUPTION_FILTER_NONE);
         insertNewProfile("travel", WifiManager.WIFI_STATE_DISABLED, AudioManager.RINGER_MODE_VIBRATE, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
-        insertNewProfile("test", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_SILENT, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
     }
 
     void insertNewProfile(String name, int wifiState, int ringerState, int bluetoothState, int interruptionState) {
