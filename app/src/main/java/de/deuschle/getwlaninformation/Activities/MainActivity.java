@@ -129,17 +129,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void createProfiles() {
-        Hashtable<String, Setting> homeDic = createProfile(WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
-        Hashtable<String, Setting> workDic = createProfile(WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_SILENT, BluetoothAdapter.STATE_OFF, NotificationManager.INTERRUPTION_FILTER_PRIORITY);
-        Hashtable<String, Setting> travelDic = createProfile(WifiManager.WIFI_STATE_DISABLED, AudioManager.RINGER_MODE_VIBRATE, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
+        insertNewProfile("home", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
+        insertNewProfile("work", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_SILENT, BluetoothAdapter.STATE_OFF, NotificationManager.INTERRUPTION_FILTER_PRIORITY);
+        insertNewProfile("travel", WifiManager.WIFI_STATE_DISABLED, AudioManager.RINGER_MODE_VIBRATE, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
+        insertNewProfile("test", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_SILENT, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
+    }
 
-        Profile home = new Profile("home", homeDic);
-        Profile work = new Profile("work", workDic);
-        Profile travel = new Profile("travel", travelDic);
-
-        profileDictionary.put(home.getName(), home);
-        profileDictionary.put(work.getName(), work);
-        profileDictionary.put(travel.getName(), travel);
+    void insertNewProfile(String name, int wifiState, int ringerState, int bluetoothState, int interruptionState) {
+        putToDictionary(new Profile(name, createProfile(wifiState, ringerState, bluetoothState, interruptionState)));
     }
 
     Hashtable<String, Setting> createProfile(int wifiState, int ringerState, int bluetoothState, int interruptionState) {
@@ -161,5 +158,9 @@ public class MainActivity extends AppCompatActivity {
         settingHashtable.put(interruptionFilter.getName(), interruptionFilter);
 
         return settingHashtable;
+    }
+
+    void putToDictionary(Profile profile) {
+        profileDictionary.put(profile.getName(), profile);
     }
 }
