@@ -134,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
         insertNewProfile("home", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
         insertNewProfile("work", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_OFF, NotificationManager.INTERRUPTION_FILTER_NONE);
         insertNewProfile("travel", WifiManager.WIFI_STATE_DISABLED, AudioManager.RINGER_MODE_VIBRATE, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
+        Profile.ProfileBuilder test = new Profile.ProfileBuilder(this);
+        test.setWlan(WifiManager.WIFI_STATE_ENABLED);
+        test.buildProfile("test");
+
     }
 
     void insertNewProfile(String name, int wifiState, int ringerState, int bluetoothState, int interruptionState) {

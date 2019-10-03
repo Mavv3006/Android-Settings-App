@@ -29,5 +29,8 @@ public abstract class Setting {
 
     public abstract void next();
 
+    /**
+     * @param state: The state to which the setting should be
+     * */
     abstract boolean setState(int state);
 }
