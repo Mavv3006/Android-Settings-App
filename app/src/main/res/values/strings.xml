@@ -8,6 +8,7 @@
     <string name="tonProfile_Ton">Ton</string>
     <string name="tonProfile_Vibrieren">Nur Vibrieren</string>
     <string name="tonProfile_Lautlos">Lautlos</string>
+    <string name="tonProfile_DHBW">DHBW</string>
     <string name="title_activity_ringtone_profile_picker">Ton Profil</string>
     <string name="radiobuttonProfileHome">Profile Home</string>
     <string name="radiobuttonProfileTravel">Profile Travel</string>

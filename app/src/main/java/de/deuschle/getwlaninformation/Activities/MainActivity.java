@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         RadioButton profieWork = findViewById(R.id.profileWork);
         RadioButton profileHome = findViewById(R.id.profileHome);
         RadioButton profileTravel = findViewById(R.id.profileTravel);
+        RadioButton profileDHBW = findViewById(R.id.profileDHBW);
 
         fab.setOnClickListener(view -> {
             textView.setText(createStatusString());
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         profieWork.setOnClickListener(view -> activateProfile("work"));
         profileHome.setOnClickListener(view -> activateProfile("home"));
         profileTravel.setOnClickListener(view -> activateProfile("travel"));
+        profileDHBW.setOnClickListener(view -> activateProfile("DHBW"));
     }
 
     @Override
@@ -134,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         insertNewProfile("home", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
         insertNewProfile("work", WifiManager.WIFI_STATE_ENABLED, AudioManager.RINGER_MODE_NORMAL, BluetoothAdapter.STATE_OFF, NotificationManager.INTERRUPTION_FILTER_NONE);
         insertNewProfile("travel", WifiManager.WIFI_STATE_DISABLED, AudioManager.RINGER_MODE_VIBRATE, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_ALL);
+        insertNewProfile("DHBW", WifiManager.WIFI_STATE_DISABLED, AudioManager.RINGER_MODE_VIBRATE, BluetoothAdapter.STATE_ON, NotificationManager.INTERRUPTION_FILTER_NONE);
         Profile.ProfileBuilder test = new Profile.ProfileBuilder(this);
         test.setWlan(WifiManager.WIFI_STATE_ENABLED);
         test.buildProfile("test");
